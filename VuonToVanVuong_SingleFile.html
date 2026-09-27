@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vườn Tơ Vấn Vương - Cõi Mộng Lưu Hồ Sơ Nhân Vật</title>
+  <meta name="description" content="Ngàn sợi tơ hồng đan dệt cõi mộng, gom lại bóng hình cố nhân giữa vạn dặm hồng trần.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Be+Vietnam+Pro:wght@300;400;500;600&display=swap" rel="stylesheet">
+  
+  <style>
+    /* ============================================================
+       1. THIẾT LẬP BẢNG MÀU & ĐỊNH DẠNG CƠ BẢN (SOFT ROSE & MILK)
+       ============================================================ */
+    :root {
+      --bg-milk: #faf5f5;
+      --bg-rose-mist: #fef5f7;
+      --text-main: #4a343a;
+      --text-sub: #78535c;
+      --accent-rose: #ba5067;
+      --accent-rose-hover: #a34156;
+      --border-rose: #f3d0d8;
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-prose: 'Lora', Georgia, serif;
+      --font-sans: 'Be Vietnam Pro', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-milk);
+      color: var(--text-main);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Hiệu ứng kính mờ (Frosted Glass) */
+    .glass-nav {
+      background: rgba(255, 255, 255, 0.78);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-rose);
+    }
+
+    .glass-card {
+      background: rgba(255, 253, 253, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(243, 208, 216, 0.7);
+      border-radius: 20px;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .glass-card:hover {
+      transform: translateY(-4px);
+      border-color: #e096a6;
+      box-shadow: 0 16px 32px -8px rgba(210, 140, 155, 0.22);
+    }
+
+    /* Canvas cánh hoa rơi */
+    #petal-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 10;
+      opacity: 0.7;
+    }
+
+    /* Top Navigation Bar */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+    }
+    .logo {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #632d39;
+      text-decoration: none;
+      letter-spacing: 1px;
+    }
+    .btn-create {
+      background-color: var(--accent-rose);
+      color: white;
+      border: none;
+      padding: 0.5rem 1.2rem;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      font-family: var(--font-sans);
+      transition: background-color 0.2s;
+    }
+    .btn-create:hover {
+      background-color: var(--accent-rose-hover);
+    }
+
+    /* Hero Section */
+    .hero-section {
+      position: relative;
+      min-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 3rem 1.5rem;
+      background: radial-gradient(circle at 50% 40%, rgba(254, 237, 241, 0.7) 0%, rgba(250, 245, 245, 0) 70%);
+    }
+    .hero-seal {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 1px dashed #e8a7b5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      background: #fffbfa;
+      box-shadow: 0 4px 15px rgba(230, 160, 175, 0.2);
+    }
+    .hero-seal span {
+      font-family: var(--font-display);
+      font-size: 1.75rem;
+      color: #b54a60;
+      font-weight: bold;
+    }
+    .hero-seal small {
+      font-size: 9px;
+      color: #9c6c76;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 700;
+      color: #572731;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+    .hero-subtitle {
+      font-family: var(--font-prose);
+      font-style: italic;
+      font-size: clamp(1rem, 2.5vw, 1.35rem);
+      color: #6b414b;
+      max-width: 720px;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+    .hero-btn {
+      padding: 0.85rem 2.2rem;
+      border-radius: 9999px;
+      background: linear-gradient(135deg, #c45369, #a83b51);
+      color: white;
+      text-decoration: none;
+      font-family: var(--font-prose);
+      font-size: 1.05rem;
+      box-shadow: 0 10px 25px -5px rgba(196, 83, 105, 0.35);
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .hero-btn:hover {
+      box-shadow: 0 14px 30px -4px rgba(196, 83, 105, 0.45);
+      transform: translateY(-2px);
+    }
+
+    /* Directory Catalog Section */
+    .catalog-section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 4rem 1.5rem 6rem;
+    }
+    .section-header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      color: #542831;
+      margin-bottom: 0.5rem;
+    }
+    .section-desc {
+      font-family: var(--font-prose);
+      font-style: italic;
+      color: #7c5861;
+      font-size: 1rem;
+    }
+
+    /* Slender Search Bar */
+    .search-wrapper {
+      max-width: 540px;
+      margin: 0 auto 2rem;
+    }
+    .search-input {
+      width: 100%;
+      padding: 0.85rem 1.5rem;
+      border-radius: 9999px;
+      border: 1px solid var(--border-rose);
+      background: white;
+      font-size: 0.95rem;
+      color: #4a2d34;
+      outline: none;
+      transition: all 0.25s;
+    }
+    .search-input:focus {
+      border-color: var(--accent-rose);
+      box-shadow: 0 0 0 3px rgba(186, 80, 103, 0.15);
+    }
+
+    /* Tag Filters */
+    .tag-filters {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-bottom: 3rem;
+    }
+    .tag-btn {
+      padding: 0.4rem 1rem;
+      border-radius: 9999px;
+      border: 1px solid var(--border-rose);
+      background: white;
+      color: #7a545c;
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .tag-btn.active {
+      background: var(--accent-rose);
+      color: white;
+      border-color: var(--accent-rose);
+    }
+
+    /* Cards Grid */
+    .character-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 2rem;
+    }
+    .char-card {
+      padding: 1.5rem;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .card-top {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .card-avatar {
+      width: 75px;
+      height: 100px;
+      border-radius: 12px;
+      overflow: hidden;
+      flex-shrink: 0;
+      border: 1px solid #f3d4dc;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(180deg, #fcedf0, #f7d6de);
+      position: relative;
+    }
+    .card-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .card-name {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #542831;
+    }
+    .card-courtesy {
+      font-size: 0.8rem;
+      color: #875560;
+      margin-bottom: 0.25rem;
+    }
+    .card-quote {
+      font-family: var(--font-prose);
+      font-style: italic;
+      font-size: 0.85rem;
+      color: #633a43;
+      padding: 0.75rem;
+      background: #fdf5f6;
+      border-left: 2px solid var(--accent-rose);
+      border-radius: 8px;
+      margin: 1rem 0;
+    }
+    .card-footer {
+      border-top: 1px solid #f4d5dc;
+      padding-top: 0.85rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      color: #916670;
+    }
+
+    /* Chế độ Trang Chi Tiết Toàn Màn Hình (Full-Page View) */
+    #character-detail-view {
+      display: none;
+      min-height: 100vh;
+      background: var(--bg-milk);
+      padding-bottom: 5rem;
+      animation: fadeIn 0.35s ease;
+    }
+    .detail-nav {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: rgba(255, 249, 250, 0.94);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border-rose);
+      padding: 0.85rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .btn-back-garden {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1.25rem;
+      border-radius: 9999px;
+      background: #ffffff;
+      border: 1px solid #f0c5ce;
+      color: #7a4853;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: var(--font-sans);
+      transition: all 0.25s;
+    }
+    .btn-back-garden:hover {
+      background: var(--accent-rose);
+      color: #ffffff;
+      border-color: var(--accent-rose);
+    }
+    .detail-banner {
+      position: relative;
+      overflow: hidden;
+      padding: 3rem 1.5rem 2.5rem;
+      background: linear-gradient(180deg, #fceef1 0%, #fdf4f6 60%, #faf5f5 100%);
+      border-bottom: 1px solid var(--border-rose);
+    }
+    .detail-hero-box {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 2.5rem;
+    }
+    @media (max-width: 768px) {
+      .detail-hero-box {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+    .detail-avatar-container {
+      width: 200px;
+      height: 270px;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid var(--border-rose);
+      box-shadow: 0 12px 30px rgba(220, 150, 165, 0.25);
+      flex-shrink: 0;
+      background: #ffffff;
+    }
+    .detail-avatar-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .detail-tabs-bar {
+      position: sticky;
+      top: 54px;
+      z-index: 35;
+      background: rgba(255, 249, 250, 0.95);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border-rose);
+      padding: 0.6rem 1rem;
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      overflow-x: auto;
+    }
+    .detail-tab-btn {
+      padding: 0.55rem 1.1rem;
+      border-radius: 9999px;
+      border: 1px solid #f2d0d7;
+      background: #ffffff;
+      color: #7a4e57;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      font-family: var(--font-sans);
+      transition: all 0.25s;
+    }
+    .detail-tab-btn.active {
+      background: var(--accent-rose);
+      color: #ffffff;
+      border-color: var(--accent-rose);
+      box-shadow: 0 4px 12px rgba(186, 80, 103, 0.25);
+    }
+    .detail-content-box {
+      max-width: 900px;
+      margin: 2rem auto 0;
+      padding: 2.2rem;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      border-radius: 24px;
+      border: 1px solid var(--border-rose);
+      box-shadow: 0 4px 20px rgba(230, 175, 185, 0.15);
+    }
+    .info-card {
+      background: #fff5f7;
+      border: 1px solid #f5d6dc;
+      border-radius: 12px;
+      padding: 1.1rem;
+      margin-bottom: 1.1rem;
+    }
+    .info-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: var(--accent-rose);
+      letter-spacing: 0.5px;
+      margin-bottom: 0.4rem;
+    }
+    .info-val {
+      font-size: 0.92rem;
+      color: #4f2931;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Canvas cánh hoa rơi trong làn gió sớm -->
+  <canvas id="petal-canvas"></canvas>
+
+  <!-- KHUNG NHÌN CHÍNH: VƯỜN CỐ NHÂN (MAIN GARDEN VIEW) -->
+  <div id="main-garden-view">
+    <!-- Thanh Điều Hướng (Top Bar) -->
+    <header class="glass-nav">
+      <a href="#" class="logo">Vườn Tơ Vấn Vương</a>
+      <span style="font-size: 0.8rem; color: #875b64; font-style: italic; font-family: var(--font-prose);">
+        Cõi Mộng Lưu Trữ Cố Nhân
+      </span>
+    </header>
+
+    <!-- Màn Hình Mở Đầu - "Cánh Cửa Ký Ức" -->
+    <section class="hero-section">
+      <div class="hero-seal">
+        <span>絲園</span>
+        <small>Vấn Vương</small>
+      </div>
+      <h1 class="hero-title">Vườn Tơ Vấn Vương</h1>
+      <p class="hero-subtitle">
+        &ldquo;Ngàn sợi tơ hồng đan dệt cõi mộng, gom lại bóng hình cố nhân giữa vạn dặm hồng trần.&rdquo;
+      </p>
+      <a href="#catalog" class="hero-btn">Lật Mở Từng Trang Ký Ức &darr;</a>
+    </section>
+
+    <!-- Sảnh Tra Cứu - "Mục Lục Cố Nhân" -->
+    <section id="catalog" class="catalog-section">
+      <div class="section-header">
+        <h2 class="section-title">Mục Lục Cố Nhân</h2>
+        <p class="section-desc">Lần theo từng nét danh xưng và sợi tơ duyên nợ để tỏ tường giai thoại mỗi người.</p>
+      </div>
+
+      <!-- Thanh tìm kiếm thuôn dài phản hồi tức thì -->
+      <div class="search-wrapper">
+        <input type="text" id="search-input" class="search-input" placeholder="Tra cứu tên, danh xưng, thân phận hoặc lời thoại...">
+      </div>
+
+      <!-- Hệ thống thẻ Tag duyên nợ -->
+      <div class="tag-filters" id="tag-filters">
+        <!-- Sinh ra bằng JavaScript -->
+      </div>
+
+      <!-- Lưới thẻ nhân vật (Character Cards) -->
+      <div class="character-grid" id="character-grid">
+        <!-- Sinh ra bằng JavaScript -->
+      </div>
+    </section>
+  </div>
+
+  <!-- TRANG CHI TIẾT TOÀN MÀN HÌNH (FULL-PAGE CHARACTER DETAIL VIEW) -->
+  <div id="character-detail-view">
+    <!-- 1. Thanh điều hướng đầu trang có nút Trở Về Vườn Cố Nhân -->
+    <div class="detail-nav">
+      <button class="btn-back-garden" onclick="closeDossier()">
+        &larr; Trở Về Vườn Cố Nhân
+      </button>
+      <span style="font-size: 0.8rem; color: #875b64; font-style: italic; font-family: var(--font-prose);">
+        Vườn Tơ Vấn Vương &middot; Giai Thoại Cố Nhân
+      </span>
+    </div>
+
+    <!-- 2. Banner ảnh nền lớn mờ ảo, ảnh chân dung to, tên, danh hiệu, câu trích dẫn -->
+    <div class="detail-banner" id="detail-banner-area">
+      <!-- Sinh ra bằng JavaScript -->
+    </div>
+
+    <!-- 3. Thanh chuyển 5 mục lớn (tab navigation) trang nhã -->
+    <div class="detail-tabs-bar">
+      <button class="detail-tab-btn active" onclick="switchDossierTab('tab1', this)">「Dáng Hình Thuở Sơ Ngộ」</button>
+      <button class="detail-tab-btn" onclick="switchDossierTab('tab2', this)">「Hồng Trần Vạn Dặm Qua」</button>
+      <button class="detail-tab-btn" onclick="switchDossierTab('tab3', this)">「Tâm Sự Kín Khôn Nguôi」</button>
+      <button class="detail-tab-btn" onclick="switchDossierTab('tab4', this)">「Sợi Tơ Nợ Vấn Vương」</button>
+      <button class="detail-tab-btn" onclick="switchDossierTab('tab5', this)">「Cơ Duyên Tầm Cố Nhân」</button>
+    </div>
+
+    <!-- Nội dung Tab -->
+    <div class="detail-content-box" id="dossier-body">
+      <!-- Sinh ra bằng JavaScript -->
+    </div>
+
+    <div style="text-align: center; margin-top: 2.5rem;">
+      <button class="btn-back-garden" onclick="closeDossier()">
+        &larr; Trở Về Vườn Cố Nhân
+      </button>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT THUẦN (LOGIC ỨNG DỤNG & LOCALSTORAGE) -->
+  <script>
+    // Dữ liệu danh sách nhân vật
+    const LOCAL_KEY = 'VUON_TO_VAN_VUONG_OC_DATA';
+    let characters = [
+  {
+    "id": "oc-bach-cuu-chieu",
+    "name": "Bạch Cửu Chiêu",
+    "courtesyName": "Thanh Nguyệt Quân · Thập Vĩ Hồ Thần",
+    "epithetQuote": "Ta đã đợi qua chín lần hoa đào nở rồi lại tàn, dẫu hồn phách này hoá thành tro bụi, sợi tơ hồng vẫn chẳng chịu đứt đoạn.",
+    "avatarStyle": {
+      "bgGradient": "from-[#fcedf0] via-[#f7d6de] to-[#eec0cc]",
+      "accentColor": "#c96a7d",
+      "sealText": "九昭",
+      "flowerSymbol": "🌸"
+    },
+    "tags": [
+      "Bạch_Nguyệt_Quang",
+      "Cố_Nhân",
+      "Thần_Thú",
+      "Thương_Tổn"
+    ],
+    "basic": {
+      "identity": "Cửu Vĩ Bạch Hồ tôn chủ của Vân Mộng Trạch, vị thần quân ẩn cư nơi ranh giới nhân gian và tiên cảnh.",
+      "selfDesignation": "Bản quân / Chiêu mỗ / Trong thư tịch xưa thường gọi là \"Hồ Tiên Vô Danh\".",
+      "birthday": "Mười lăm tháng Tám (Đêm trăng tròn sương giáng).",
+      "ageMoon": "Hơn hai ngàn năm linh lực · Dung mạo vĩnh viễn dừng ở tuổi hai mươi.",
+      "appearance": "Bạch y thêu vân lôi chỉ bạc, tóc dài như suối bạc buông xõa qua vai, đuôi mắt thoáng vệt đỏ chu sa bẩm sinh. Đôi mắt màu hổ phách luôn đượm vẻ hoài niệm xa xăm, khi động tình sẽ thoảng hiện chín chiếc đuôi lông vũ mềm mại như mây.",
+      "tokenOfAffection": "Chiếc lược ngọc khắc hình hoa hải đường cùng ngọc bội Tê Hà đượm hương trầm cổ.",
+      "iconicQuote": "Ngươi nói duyên phận như bèo nước gặp nhau, sao không hỏi ta từng lội qua ngàn con sông chỉ để hứng lấy một giọt sương rơi từ tay áo người?"
+    },
+    "past": {
+      "origin": "Sinh ra nơi ngọn núi Tuyết Lĩnh hoang vu, độ kiếp thiên lôi suýt hồn phi phách tán thì được một thiếu niên phàm trần lấy áo tơi che chở suốt ba ngày tuyết lớn.",
+      "turningPoint": "Năm trăm năm trước, vì bảo vệ linh hồn người ấy trong kiếp luân hồi mà tự chặt đứt một chiếc đuôi bản mệnh, phong ấn ký ức của chính mình vào viên Linh Lung Châu.",
+      "currentStatus": "Lập nên đình Vấn Tơ bên bờ hồ sương, vừa chờ đợi người luân hồi trở lại, vừa giúp những linh hồn lạc lối tìm về mối duyên chưa trọn."
+    },
+    "psychology": {
+      "innerVsOuter": "Bên ngoài thanh lãnh cao ngạo, lời nói đạm mạc như nước hồ thu; bên trong lại mang một trái tim cố chấp, dễ xúc động trước những ân tình nhỏ bé.",
+      "habits": "Thường vô thức đưa tay vân vê đóa đào khô giấu trong tay áo; mỗi khi uống rượu đều rót thừa một chén đối diện dẫu chẳng có ai ngồi.",
+      "likes": "Trà tuyết pha bằng sương mai, tiếng đàn tranh lúc canh ba, mùi hương gỗ tuyết tùng phảng phất sau cơn mưa xuân.",
+      "dislikes": "Tiếng sấm sét rạch ngang trời đêm, những kẻ phụ bạc lời thề ước, cảnh biệt ly nơi bến đò khi hoàng hôn buông."
+    },
+    "relations": {
+      "redString": "Vương vấn ngàn năm cùng một linh hồn phàm trần đã trải qua bảy kiếp luân hồi chưa từng nhận ra nhau.",
+      "soulmate": "Tạ Doanh Trần (Vong Trần Các Chủ) - người duy nhất hiểu được vị đắng trong chén rượu vong tình của y.",
+      "grievance": "Mối thù xưa với Thiên Cương Tông từng toan lột đuôi luyện đan, nhưng nay đã hóa thành tro bụi buông bỏ.",
+      "destinyTies": "Từng cứu Quân Tố Huyên lúc nàng lạc trong sương tuyết, trao cho nàng một nhành linh thảo ngàn năm."
+    },
+    "encounter": {
+      "condition": "Vào đêm rằm tháng Giêng hoặc tháng Tám, khi sương mù giăng kín mặt hồ Vân Mộng và mang theo một chiếc đèn hoa đăng thắp bằng sáp hoa đào.",
+      "clues": "Tiếng tiêu ai oán vọng lại từ giữa làn sương lạnh, trên mặt nước trôi lững lờ những cánh hoa đào không bao giờ héo tàn.",
+      "locations": "Đình Vấn Tơ, đình nghỉ chân Lạc Hoa bên bờ hồ sương phía Đông Nam thành cổ.",
+      "triggerRoute": "Thả hoa đăng trôi theo dòng nước, nếu đèn không chìm mà tự xoay ba vòng hướng về cồn cát giữa hồ, bước theo vệt sáng sẽ diện kiến thần quân."
+    },
+    "createdAt": 1710000000000
+  },
+  {
+    "id": "oc-tham-mong-dao",
+    "name": "Thẩm Mộng Dao",
+    "courtesyName": "Băng Phách Kiếm Tôn · Vô Tình Kiếm Trưởng",
+    "epithetQuote": "Kiếm của ta chém đứt sầu bi thế tục, lại vĩnh viễn không nỡ cắt đứt một sợi tóc mai người từng trao thuở ban đầu.",
+    "avatarStyle": {
+      "bgGradient": "from-[#f3eef7] via-[#e6daeb] to-[#d6c4de]",
+      "accentColor": "#966d9c",
+      "sealText": "梦瑶",
+      "flowerSymbol": "❄️"
+    },
+    "tags": [
+      "Bi_Kịch",
+      "Chính_Diện",
+      "Hoa_Rơi_Hữu_Ý",
+      "Kiếm_Tu"
+    ],
+    "basic": {
+      "identity": "Đại đệ tử thủ tịch của Tuyết Lăng Kiếm Phái, người trẻ tuổi nhất lĩnh ngộ được tầng thứ chín của Vô Niệm Kiếm Pháp.",
+      "selfDesignation": "Thẩm mỗ / Đồ nhi / Kiếm giả.",
+      "birthday": "Mùng bảy tháng Bảy (Đêm Ngân Hà cầu Ô Thước).",
+      "ageMoon": "Nhị thập tứ (24 tuổi) · Bước vào cảnh giới Tụ Khí từ năm mười sáu.",
+      "appearance": "Y phục lam nguyệt đan xen dải lụa màu hoa phấn nhạt, eo thắt đai ngọc trắng mang theo thanh kiếm Lương Băng vỏ bọc da cá đuối bạc. Ánh mắt kiên định, mi dài đọng sương, khóe môi hiếm khi hé nụ cười nhưng ôn nhu khi nhìn cố nhân.",
+      "tokenOfAffection": "Mảnh kiếm toái bằng băng ngọc cùng chiếc túi gấm thêu vụng về hình chim liền cánh.",
+      "iconicQuote": "Sư phụ dạy ta tu Vô Tình Đạo để trường sinh, nhưng nếu trường sinh mà trong lòng hoang vu như tuyết lạnh, sống vạn năm có ích chi?"
+    },
+    "past": {
+      "origin": "Sinh ra trong gia đình thư hương thế gia bên bờ sông Tiêu Tương, loạn lạc binh đao khiến nàng lạc mất gia quyến rồi được Kiếm Tôn nhặt về đỉnh núi Tuyết Phong.",
+      "turningPoint": "Năm mười chín tuổi, trong đại hội tỉ kiếm, nàng đã thu kiếm chịu trọng thương chứ không nỡ đâm trúng người từng cùng nàng chia nửa củ khoai nướng năm xưa.",
+      "currentStatus": "Một mình phiêu bạt giang hồ, tìm kiếm bí thuật nghịch chuyển thiên mệnh để cứu người tri kỷ đang hôn mê trong hàn băng động."
+    },
+    "psychology": {
+      "innerVsOuter": "Khoác lên mình dáng vẻ kiếm khách lạnh lùng quyết tuyệt, nhưng lại rất dễ mềm lòng trước trẻ nhỏ và những mảnh đời lưu lạc chốn phong trần.",
+      "habits": "Mỗi khi đứng trước gió lạnh thường đưa tay xoa nhẹ chuôi kiếm, đêm về hay lặng lẽ nhìn ánh trăng soi qua tán mận.",
+      "likes": "Mứt hoa mai chua ngọt, kiếm phổ thất truyền, sự tĩnh lặng của rừng trúc vào buổi sớm mai.",
+      "dislikes": "Những giáo điều trói buộc của danh môn chính phái, sự giả dối ẩn sau nụ cười hòa nhã."
+    },
+    "relations": {
+      "redString": "Nặng nợ thâm tình với một người ở bên kia chiến tuyến tà đạo, đôi bên kiếm chỉ vào nhau mà tim rỉ máu.",
+      "soulmate": "Quân Tố Huyên - người đã dùng chín mươi chín mũi châm cứu sống nàng sau trận quyết đấu trên Tuyết Đỉnh.",
+      "grievance": "Sư môn trục xuất vì từ chối chém giết người vô tội, nay mang danh \"Kiếm Tiên bội nghịch\".",
+      "destinyTies": "Từng giao thủ ngang tài ngang sức với Tạ Doanh Trần để đoạt lấy một mảnh bản đồ cổ."
+    },
+    "encounter": {
+      "condition": "Đi qua Hạp Cốc Băng Hàn khi tuyết rơi dày hạt nhất vào tiết Lập Đông, trong tay không mang theo bất kỳ vũ khí bén nhọn nào.",
+      "clues": "Những vết kiếm khí khắc thanh nhã trên vách đá hóa thành hình những nhành mai nở rộ giữa băng giá.",
+      "locations": "Tuyết Phong Đính, Trúc Lâm đình hoang, tửu quán Lạc Tuyết nơi chân núi.",
+      "triggerRoute": "Ngồi trong quán rượu gọi một bình \"Hàn Đàm Hương\", ngâm nga khúc dân ca vùng Tiêu Tương, một bóng áo trắng mang kiếm sẽ nhẹ nhàng ngồi xuống đối diện."
+    },
+    "createdAt": 1710000100000
+  },
+  {
+    "id": "oc-ta-doanh-tran",
+    "name": "Tạ Doanh Trần",
+    "courtesyName": "Vong Trần Các Chủ · Dạ Du Lang Quân",
+    "epithetQuote": "Thế nhân đổi vạn lượng hoàng kim để mua một đoạn hồi ức, còn ta chỉ muốn chuộc lại một buổi chiều mưa năm ấy.",
+    "avatarStyle": {
+      "bgGradient": "from-[#fcedea] via-[#f7d6cc] to-[#ecc0b3]",
+      "accentColor": "#b86650",
+      "sealText": "瀛尘",
+      "flowerSymbol": "🏮"
+    },
+    "tags": [
+      "Bí_Ẩn",
+      "Cố_Nhân",
+      "Phản_Anh_Hùng",
+      "Duyên_Kiếp"
+    ],
+    "basic": {
+      "identity": "Chủ nhân của Vong Trần Các - nơi giao dịch những ký ức, tâm nguyện và tiếc nuối sâu kín nhất của chúng sinh tam giới.",
+      "selfDesignation": "Các chủ / Tạ mỗ / Kẻ chép sử bóng đêm.",
+      "birthday": "Đêm ba mươi trừ tịch (Khoảnh khắc giao thời tối tăm nhất).",
+      "ageMoon": "Không rõ năm sinh · Trông như thiếu niên công tử tầm hăm mốt tuổi.",
+      "appearance": "Trang phục gấm hoa tối màu điểm xuyết thêu chỉ hồng phấn hình hoa mẫu đơn tàn. Tay luôn cầm chiếc quạt xương ngọc đen vẽ bức tranh non sông mù sương, nụ cười nửa miệng phảng phất vẻ trêu ngươi thế sự nhưng đáy mắt chất chứa muôn vàn tang thương.",
+      "tokenOfAffection": "Chiếc quạt xếp Hồi Mộng và một đoạn tơ tằm đỏ nhuốm máu không bao giờ phai.",
+      "iconicQuote": "Ký ức là con dao hai lưỡi. Kẻ muốn quên thì nhớ mãi không thôi, kẻ muốn nhớ thì sớm muộn cũng bị tháng năm mài mòn."
+    },
+    "past": {
+      "origin": "Vốn là công tử dòng dõi quý tộc nơi kinh đô phồn hoa, một đêm chịu họa diệt môn vì nắm giữ bí mật về dòng máu trường sinh.",
+      "turningPoint": "Nuốt vào viên Vong Xuyên Châu để sống sót, đổi lại là phải vĩnh viễn ghi nhớ nỗi đau của hàng vạn người đã từng đến các bán ký ức.",
+      "currentStatus": "Thu thập đủ chín ngàn chín trăm chín mươi chín mảnh ký ức vương vấn để mở lại cánh cổng thời gian trở về đêm định mệnh."
+    },
+    "psychology": {
+      "innerVsOuter": "Bên ngoài khéo ăn khéo nói, tính toán chi li từng món nợ nhân gian; nhưng đối với những kẻ chung tình lại ngầm châm chước và ban phát thiện duyên.",
+      "habits": "Thích vừa gõ nhẹ quạt vào lòng bàn tay vừa đếm từng giọt nến đỏ rơi; luôn giữ lại những bức thư tình không có người nhận.",
+      "likes": "Trà sen ướp trăng đêm, những giai thoại tình trường bi tráng, tiếng mưa rả rích trên mái ngói rêu phong.",
+      "dislikes": "Những kẻ lộng ngôn thất hứa, sự ồn ào khoa trương nơi phố thị ban ngày."
+    },
+    "relations": {
+      "redString": "Vấn vương với hình bóng một cô nương cài trâm hoa hải đường đã tan biến trong biển lửa kinh thành năm xưa.",
+      "soulmate": "Bạch Cửu Chiêu - hai kẻ cô độc tựa vào nhau đối ẩm qua những đêm trường giá lạnh.",
+      "grievance": "Ân oán chồng chất với hoàng gia tiền triều, nay những kẻ thù đều đã hóa thành nắm xương tàn dưới mồ.",
+      "destinyTies": "Thường bí mật gửi những vị thuốc quý hiếm đến y quán của Quân Tố Huyên thông qua bồ câu đưa thư."
+    },
+    "encounter": {
+      "condition": "Đi qua cầu Phong Nguyệt vào đúng canh ba lúc sương mù dày đặc nhất, mang theo một vật chứa đựng niềm tiếc nuối lớn nhất của đời mình.",
+      "clues": "Một chiếc lồng đèn lụa đỏ treo lơ lửng giữa không trung không người cầm, soi sáng lối rẽ vào một con ngõ không có trên bản đồ.",
+      "locations": "Vong Trần Các (chỉ xuất hiện trong mộng cảnh hoặc nơi giao nhau giữa sống và thác), quán trà Đêm Khuya.",
+      "triggerRoute": "Bước qua ngọn đèn lụa đỏ và trả lời câu hỏi: \"Nếu được quay lại, ngươi muốn giữ lại điều gì?\", cánh cửa son của các sẽ tự động mở ra."
+    },
+    "createdAt": 1710000200000
+  },
+  {
+    "id": "oc-quan-to-huyen",
+    "name": "Quân Tố Huyên",
+    "courtesyName": "Bách Thảo Tiên Nương · Linh Cốc Ẩn Y",
+    "epithetQuote": "Thuốc đắng có thể chữa lành vết thương da thịt, nhưng ánh mắt người nhìn ta lại là loại độc dược không có phương cứu chữa.",
+    "avatarStyle": {
+      "bgGradient": "from-[#fef2f2] via-[#fed7aa] to-[#fbcfe8]",
+      "accentColor": "#db7888",
+      "sealText": "素萱",
+      "flowerSymbol": "🌿"
+    },
+    "tags": [
+      "Bạch_Nguyệt_Quang",
+      "Ấm_Áp",
+      "Trị_Liệu",
+      "Hoa_Rơi_Hữu_Ý"
+    ],
+    "basic": {
+      "identity": "Y nữ truyền nhân duy nhất của Bách Thảo Thần Cốc, người nắm giữ cuốn bí kíp \"Tố Vấn Diệu Điển\".",
+      "selfDesignation": "Huyên nhi / Tiểu y / Tố Huyên.",
+      "birthday": "Tiết Thanh Minh (Mùng năm tháng Ba âm lịch).",
+      "ageMoon": "Đôi mươi (20 tuổi) · Tươi tắn thanh thuần như nhành lan trong thung lũng.",
+      "appearance": "Váy áo màu cánh sen nhạt phối cùng tà lụa trắng ngà thêu nhành lá ngải cứu, thắt lưng đính những chiếc chuông bạc nhỏ kêu lanh lảnh mỗi bước đi. Gương mặt thanh tú, nụ cười ngọt ngào xua tan muộn phiền, thoang thoảng hương thơm thảo mộc thảo dược tươi.",
+      "tokenOfAffection": "Chiếc túi thơm hoa cúc dại thêu tay cùng chiếc trâm gỗ đào khắc hình giọt sương.",
+      "iconicQuote": "Ta nguyện làm một ngọn cỏ nhỏ bên đường, che mát gót chân người qua vạn nẻo bụi trần, dẫu người chẳng bao giờ ngoái lại."
+    },
+    "past": {
+      "origin": "Được lão sư phụ nhặt về từ gốc cây ngân hạnh trăm tuổi trong thung lũng thuốc, lớn lên cùng chim chóc và muôn loài hoa cỏ.",
+      "turningPoint": "Năm mười bảy tuổi, bước chân ra ngoài cốc cứu giúp dân làng trong đợt dịch bệnh, vô tình gặp và cứu một kiếm khách mang thương tích đầy mình.",
+      "currentStatus": "Vừa hái thuốc cứu người khắp chốn thảo nguyên, vừa tìm kiếm ba vị thuốc trời ban để luyện viên \"Hoàn Hồn Đan\"."
+    },
+    "psychology": {
+      "innerVsOuter": "Vẻ ngoài yếu đuối dịu dàng khiến người ta muốn che chở, nhưng bên trong lại có nghị lực phi thường và lòng quả cảm không sợ hãi trước cái chết.",
+      "habits": "Mỗi khi lo lắng thường bóp nhẹ những viên thuốc tễ trong lòng bàn tay; thích phơi các loại hoa dại trên bậu cửa sổ.",
+      "likes": "Vị ngọt của mật ong rừng, sương sớm trên lá sen, ngắm nhìn nụ cười của những bệnh nhân bình phục.",
+      "dislikes": "Mùi máu tanh nơi chiến trường, sự tàn nhẫn của loài người đối với thiên nhiên vạn vật."
+    },
+    "relations": {
+      "redString": "Trao trọn trái tim cho một kiếm khách lãng du chỉ xem nàng như một muội muội phương xa.",
+      "soulmate": "Thẩm Mộng Dao - hai nữ tử một cương một nhu, chia sẻ cùng nhau những nỗi niềm không thể tỏ cùng ai.",
+      "grievance": "Không có kẻ thù, nhưng luôn canh cánh nỗi đau không thể cứu sống người sư phụ đã nuôi nấng mình.",
+      "destinyTies": "Thường xuyên trao đổi dược liệu và tin tức giang hồ với Vong Trần Các của Tạ Doanh Trần."
+    },
+    "encounter": {
+      "condition": "Đi lạc vào thung lũng Mù Sương phía sau rặng núi Lạc Hà khi trong lòng mang một vết thương lòng hoặc thể xác.",
+      "clues": "Mùi hương ngọt mát của hoa ngọc lan và cỏ hương bài bay theo gió, tiếng chuông bạc ngân vang rộn ràng giữa vạt hoa dại.",
+      "locations": "Bách Thảo Cốc, Căn nhà tranh bên bờ suối Mộng Tuyền, Chợ dược liệu trấn Phù Dung.",
+      "triggerRoute": "Đi men theo dòng suối ngược lên đầu nguồn, khi thấy một cây cầu gỗ nhỏ phủ đầy hoa đỗ quyên tím, bước qua cầu sẽ thấy nàng đang phơi thuốc trong sân."
+    },
+    "createdAt": 1710000300000
+  }
+];
+
+    try {
+      const saved = localStorage.getItem(LOCAL_KEY);
+      if (saved) {
+        characters = JSON.parse(saved);
+      }
+    } catch(e) {}
+
+    let currentSelectedChar = null;
+    let activeTag = 'Tất Cả';
+    let searchQuery = '';
+
+    // Khởi tạo hiển thị
+    function renderCatalog() {
+      // Tags
+      const tagsSet = new Set();
+      characters.forEach(c => c.tags.forEach(t => tagsSet.add(t)));
+      const tagList = ['Tất Cả', ...Array.from(tagsSet)];
+
+      const tagContainer = document.getElementById('tag-filters');
+      tagContainer.innerHTML = tagList.map(tag => `
+        <button class="tag-btn ${activeTag === tag ? 'active' : ''}" onclick="filterByTag('${tag}')">
+          ${tag === 'Tất Cả' ? 'Tất Cả Cố Nhân' : '#' + tag.replace(/_/g, ' ')}
+        </button>
+      `).join('');
+
+      // Cards
+      const grid = document.getElementById('character-grid');
+      const filtered = characters.filter(c => {
+        const matchesTag = activeTag === 'Tất Cả' || c.tags.includes(activeTag);
+        const q = searchQuery.toLowerCase();
+        const matchesSearch = !q || c.name.toLowerCase().includes(q) || c.courtesyName.toLowerCase().includes(q) || c.epithetQuote.toLowerCase().includes(q);
+        return matchesTag && matchesSearch;
+      });
+
+      if (filtered.length === 0) {
+        grid.innerHTML = '<div style="grid-column: 1/-1; text-align:center; padding: 3rem; color: #875560;">Chưa tìm thấy bóng hình cố nhân nào.</div>';
+        return;
+      }
+
+      grid.innerHTML = filtered.map(c => `
+        <div class="glass-card char-card" onclick="openDossier('${c.id}')">
+          <div>
+            <div class="card-top">
+              <div class="card-avatar">
+                ${c.avatarUrl ? `<img src="${c.avatarUrl}" alt="${c.name}">` : `<span style="font-size:24px; font-weight:bold; color:${c.avatarStyle.accentColor}; font-family:var(--font-display);">${c.name[0]}</span>`}
+              </div>
+              <div style="flex:1;">
+                <div class="card-name">${c.name}</div>
+                <div class="card-courtesy">${c.courtesyName}</div>
+                <div style="font-size: 0.75rem; color: #9c7880;">${c.basic.identity}</div>
+              </div>
+            </div>
+            <div class="card-quote">&ldquo;${c.epithetQuote}&rdquo;</div>
+          </div>
+          <div class="card-footer">
+            <span>${c.tags.slice(0, 2).map(t => '#' + t.replace(/_/g, ' ')).join(' · ')}</span>
+            <span style="color:var(--accent-rose); font-weight:600;">Xem Giai Thoại &rarr;</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function filterByTag(tag) {
+      activeTag = tag;
+      renderCatalog();
+    }
+
+    document.getElementById('search-input').addEventListener('input', (e) => {
+      searchQuery = e.target.value;
+      renderCatalog();
+    });
+
+    // Mở Trang Chi Tiết Toàn Màn Hình (Full-Page View)
+    let activeTabId = 'tab1';
+    function openDossier(id) {
+      currentSelectedChar = characters.find(c => c.id === id);
+      if (!currentSelectedChar) return;
+      activeTabId = 'tab1';
+
+      // Render banner
+      renderDetailBanner();
+
+      // Render tab buttons
+      document.querySelectorAll('.detail-tabs-bar .detail-tab-btn').forEach((b, idx) => {
+        b.classList.toggle('active', idx === 0);
+      });
+
+      // Render tab content
+      renderDossierContent();
+
+      // Chuyển đổi hiển thị
+      document.getElementById('main-garden-view').style.display = 'none';
+      document.getElementById('character-detail-view').style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function closeDossier() {
+      document.getElementById('character-detail-view').style.display = 'none';
+      document.getElementById('main-garden-view').style.display = 'block';
+      document.getElementById('catalog').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function renderDetailBanner() {
+      const c = currentSelectedChar;
+      if (!c) return;
+      const banner = document.getElementById('detail-banner-area');
+      const avatarHtml = c.avatarUrl
+        ? '<img src="' + c.avatarUrl + '" alt="' + c.name + '">'
+        : '<div style="width:100%; height:100%; background:linear-gradient(180deg, #fcedf0, #f7d6de); display:flex; flex-direction:column; align-items:center; justify-content:center; color:' + c.avatarStyle.accentColor + ';"><span style="font-size:3.5rem; font-family:var(--font-display); font-weight:bold;">' + c.name[0] + '</span><span style="font-size:0.85rem; font-family:var(--font-prose); font-style:italic; color:#6e464f; margin-top:0.5rem;">' + c.name + '</span></div>';
+
+      banner.innerHTML =
+        '<div class="detail-hero-box">' +
+          '<div class="detail-avatar-container">' + avatarHtml + '</div>' +
+          '<div style="flex:1;">' +
+            '<div style="display:inline-block; padding:0.25rem 0.8rem; border-radius:9999px; background:#fbe7ec; color:#ba5067; font-size:0.75rem; font-weight:bold; margin-bottom:0.6rem;">' + c.basic.identity + '</div>' +
+            '<h1 style="font-family:var(--font-display); font-size:clamp(2rem, 5vw, 3.2rem); font-weight:bold; color:#52242e; line-height:1.15; margin-bottom:0.4rem;">' + c.name + '</h1>' +
+            '<p style="font-family:var(--font-prose); font-size:1.1rem; color:#7e4e58; font-style:italic; margin-bottom:1rem;">' + c.courtesyName + '</p>' +
+            '<blockquote style="font-family:var(--font-prose); font-size:1.05rem; font-style:italic; color:#5a2732; background:rgba(255,255,255,0.85); padding:1rem 1.25rem; border-radius:16px; border-left:4px solid var(--accent-rose); box-shadow:0 2px 10px rgba(220,150,165,0.15); max-width:650px;">&ldquo;' + c.epithetQuote + '&rdquo;</blockquote>' +
+          '</div>' +
+        '</div>';
+    }
+
+    function switchDossierTab(tabId, btn) {
+      activeTabId = tabId;
+      document.querySelectorAll('.detail-tabs-bar .detail-tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderDossierContent();
+    }
+
+    function renderDossierContent() {
+      const c = currentSelectedChar;
+      if (!c) return;
+      const body = document.getElementById('dossier-body');
+
+      if (activeTabId === 'tab1') {
+        body.innerHTML = `
+          <div style="margin-bottom:1.5rem; text-align:center;">
+            <h2 style="font-family:var(--font-display); font-size:2rem; color:#542630;">${c.name}</h2>
+            <div style="font-size:0.85rem; color:#875560;">${c.courtesyName}</div>
+          </div>
+          <div class="info-card"><div class="info-label">Danh Tính & Thân Phận</div><div class="info-val">${c.basic.identity}</div></div>
+          <div class="info-card"><div class="info-label">Tự Xưng / Cách Gọi</div><div class="info-val">${c.basic.selfDesignation}</div></div>
+          <div class="info-card"><div class="info-label">Sinh Thần & Tuổi Tác</div><div class="info-val">${c.basic.birthday} · ${c.basic.ageMoon}</div></div>
+          <div class="info-card"><div class="info-label">Dung Mạo, Y Phục & Khí Chất</div><div class="info-val">${c.basic.appearance}</div></div>
+          <div class="info-card"><div class="info-label">Pháp Bảo / Tín Vật Định Tình</div><div class="info-val">${c.basic.tokenOfAffection}</div></div>
+          <div class="info-card" style="border-left: 3px solid var(--accent-rose);"><div class="info-label">Câu Thoại Kinh Điển</div><div class="info-val" style="font-family:var(--font-prose); font-style:italic;">&ldquo;${c.basic.iconicQuote}&rdquo;</div></div>
+        `;
+      } else if (activeTabId === 'tab2') {
+        body.innerHTML = `
+          <div class="info-card"><div class="info-label">Xuất Thân Chốn Phong Sương</div><div class="info-val">${c.past.origin}</div></div>
+          <div class="info-card"><div class="info-label">Khúc Ngoặt Định Mệnh Chia Đôi Đời Người</div><div class="info-val">${c.past.turningPoint}</div></div>
+          <div class="info-card"><div class="info-label">Thực Tại & Chuyến Phiêu Lưu Chưa Hồi Kết</div><div class="info-val">${c.past.currentStatus}</div></div>
+        `;
+      } else if (activeTabId === 'tab3') {
+        body.innerHTML = `
+          <div class="info-card"><div class="info-label">Tầng Sâu Tâm Lý (Nội Tâm vs Vẻ Ngoài)</div><div class="info-val">${c.psychology.innerVsOuter}</div></div>
+          <div class="info-card"><div class="info-label">Những Thói Quen Vô Thức Dịu Dàng</div><div class="info-val">${c.psychology.habits}</div></div>
+          <div class="info-card"><div class="info-label">Những Điều Quyến Luyến, Yêu Thích</div><div class="info-val">${c.psychology.likes}</div></div>
+          <div class="info-card"><div class="info-label">Những Nỗi Ám Ảnh, Căm Ghét</div><div class="info-val">${c.psychology.dislikes}</div></div>
+        `;
+      } else if (activeTabId === 'tab4') {
+        body.innerHTML = `
+          <div class="info-card"><div class="info-label">Mối Dây Tơ Hồng (Duyên Định)</div><div class="info-val">${c.relations.redString}</div></div>
+          <div class="info-card"><div class="info-label">Tri Kỷ Tri Âm</div><div class="info-val">${c.relations.soulmate}</div></div>
+          <div class="info-card"><div class="info-label">Ân Oán Khó Dứt</div><div class="info-val">${c.relations.grievance}</div></div>
+          <div class="info-card"><div class="info-label">Duyên Kiếp Tương Tàn Cùng Nhân Vật Khác</div><div class="info-val">${c.relations.destinyTies}</div></div>
+        `;
+      } else if (activeTabId === 'tab5') {
+        body.innerHTML = `
+          <div class="info-card"><div class="info-label">Điều Kiện Tương Ngộ</div><div class="info-val">${c.encounter.condition}</div></div>
+          <div class="info-card"><div class="info-label">Manh Mối Dẫn Đường</div><div class="info-val">${c.encounter.clues}</div></div>
+          <div class="info-card"><div class="info-label">Chốn Cũ Thường Xuất Hiện</div><div class="info-val">${c.encounter.locations}</div></div>
+          <div class="info-card" style="border-left: 3px solid var(--accent-rose);"><div class="info-label">Cách Thức Kích Hoạt Tuyến Diện Kiến</div><div class="info-val">${c.encounter.triggerRoute}</div></div>
+        `;
+      }
+    }
+
+    // Hiệu ứng cánh hoa bay trên Canvas
+    (function initPetals() {
+      const canvas = document.getElementById('petal-canvas');
+      const ctx = canvas.getContext('2d');
+      let w = canvas.width = window.innerWidth;
+      let h = canvas.height = window.innerHeight;
+      window.addEventListener('resize', () => { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; });
+      const petals = Array.from({ length: 28 }, () => ({
+        x: Math.random() * w, y: Math.random() * h,
+        size: 8 + Math.random() * 10,
+        speedX: 0.5 + Math.random(),
+        speedY: 0.8 + Math.random(),
+        rot: Math.random() * 6.28,
+        rotSpeed: (Math.random() - 0.5) * 0.02
+      }));
+      function anim() {
+        ctx.clearRect(0, 0, w, h);
+        petals.forEach(p => {
+          p.x += p.speedX; p.y += p.speedY; p.rot += p.rotSpeed;
+          if (p.y > h + 10) { p.y = -10; p.x = Math.random() * w; }
+          if (p.x > w + 10) p.x = -10;
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.rot);
+          ctx.beginPath();
+          ctx.bezierCurveTo(p.size * 0.5, -p.size * 0.5, p.size, -p.size * 0.2, p.size * 0.8, p.size * 0.6);
+          ctx.bezierCurveTo(p.size * 0.4, p.size * 0.9, -p.size * 0.2, p.size * 0.6, 0, 0);
+          ctx.fillStyle = 'rgba(244, 114, 182, 0.4)';
+          ctx.fill();
+          ctx.restore();
+        });
+        requestAnimationFrame(anim);
+      }
+      anim();
+    })();
+
+    // Chạy khi nạp trang
+    renderCatalog();
+  </script>
+</body>
+</html>
